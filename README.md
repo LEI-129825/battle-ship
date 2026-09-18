@@ -22,13 +22,13 @@ Basic academic version of Battleship game to build upon.
 > **Note:** The quantity and shape of the ships in this version follow the traditional Portuguese rules, which differ from standard international or online variations.
 
 ## Ship Types
-| Batalha Naval | Descobrimentos | English | Dimensão | #Navios |
-| :--- | :--- | :--- | :---: | :---: |
-| Porta-aviões | Galeão | Galleon | 5 | 1 |
-| Navio de 4 canhões | Fragata | Frigate | 4 | 1 |
-| Navio de 3 canhões | Nau | Carrack | 3 | 2 |
-| Navio de 2 canhões | Caravela | Caravel | 2 | 3 |
-| Submarino | Barca | Barge | 1 | 4 |
+| Batalha Naval      | Descobrimentos | English | Dimensão | #Navios |
+|:-------------------|:---------------|:--------|:--------:|:-------:|
+| Porta-aviões       | Galeão         | Galleon |    5     |    1    |
+| Navio de 4 canhões | Fragata        | Frigate |    4     |    1    |
+| Navio de 3 canhões | Nau            | Carrack |    3     |    2    |
+| Navio de 2 canhões | Caravela       | Caravel |    2     |    3    |
+| Submarino          | Barca          | Barge   |    1     |    4    |
 
 ## Link Ships (Wikipedia)
 For more information about the ships used in the Discoveries Battleship Game:
