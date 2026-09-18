@@ -11,6 +11,16 @@ Basic academic version of Battleship game to build upon.
 | João Almeida  | 129862         | LEI    |
 | Martim Barros | 129873         | LEI    |
 
+
+## Ship Types
+| Batalha Naval | Descobrimentos | English | Dimensão | #Navios |
+| :--- | :--- | :--- | :---: | :---: |
+| Porta-aviões | Galeão | Galleon | 5 | 1 |
+| Navio de 4 canhões | Fragata | Frigate | 4 | 1 |
+| Navio de 3 canhões | Nau | Carrack | 3 | 2 |
+| Navio de 2 canhões | Caravela | Caravel | 2 | 3 |
+| Submarino | Barca | Barge | 1 | 4 |
+
 ## Game Rules
 
 1. **Setup:** Both players start by secretly positioning their fleet on their respective grids.
