@@ -21,6 +21,14 @@ Basic academic version of Battleship game to build upon.
 | Navio de 2 canhões | Caravela | Caravel | 2 | 3 |
 | Submarino | Barca | Barge | 1 | 4 |
 
+## Link Ships (Wikipedia)
+For more information about the ships used in the Discoveries Battleship Game:
+
+- [Galleon](https://en.wikipedia.org/wiki/Galleon)
+- [Frigate](https://en.wikipedia.org/wiki/Frigate)
+- [Carrack](https://en.wikipedia.org/wiki/Carrack)
+- [Caravel](https://en.wikipedia.org/wiki/Caravel)
+- [Barge](https://en.wikipedia.org/wiki/Barge)
 ## Game Rules
 
 1. **Setup:** Both players start by secretly positioning their fleet on their respective grids.
