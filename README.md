@@ -21,3 +21,12 @@ Basic academic version of Battleship game to build upon.
 | Navio de 2 canhões | Caravela | Caravel | 2 | 3 |
 | Submarino | Barca | Barge | 1 | 4 |
 
+## Game Rules
+
+1. **Setup:** Both players start by secretly positioning their fleet on their respective grids.
+2. **Taking Turns:** Players take turns attacking the opponent. On your turn, you must fire a volley of **three shots**, providing the coordinates (row, column) for each shot.
+3. **Feedback:** After the three shots are fired, the opponent must announce the exact result of the volley. They need to specify if each shot was a "miss" (water) or a "hit", including the type of ship that was hit and if it was completely sunk.
+4. **Tracking Progress:** Each player must keep track of their shots on the opponent's grid, marking hits, misses, and sunken ships to plan their next moves.
+5. **Winning the Game:** The first player to successfully hit and sink all the ships in the opponent's fleet wins.
+
+> **Note:** The quantity and shape of the ships in this version follow the traditional Portuguese rules, which differ from standard international or online variations.
