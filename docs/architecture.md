@@ -6,55 +6,13 @@ Este documento apresenta a estrutura de classes e a análise arquitetural do sis
 
 ## 1. Diagrama de Classes
 
-O diagrama abaixo utiliza a sintaxe Mermaid e é renderizado graficamente em plataformas compatíveis (ex.: GitHub, VS Code, Obsidian, Notion).
-
-```mermaid
-classDiagram
-direction BT
-
-class App
-class Barge
-class Caravel
-class Carrack
-class Compass {
-    <<enumeration>>
-}
-class Fleet
-class Frigate
-class Galleon
-class Game
-class IFleet {
-    <<Interface>>
-}
-class IGame {
-    <<Interface>>
-}
-class IPosition {
-    <<Interface>>
-}
-class IShip {
-    <<Interface>>
-}
-class Position
-class Ship
-class Tasks
-
-Barge --> Ship 
-Caravel --> Ship 
-Carrack --> Ship 
-Fleet ..> IFleet 
-Frigate --> Ship 
-Galleon --> Ship 
-Game ..> IGame 
-Position ..> IPosition 
-Ship ..> IShip
-```
+![Diagrama de Classes](diagram.svg)
 
 ---
 
 ## 2. Visão Geral da Arquitetura
 
-O sistema adota os princípios fundamentais da **Programação Orientada a Objetos (POO)** e boas práticas dos princípios **SOLID**, focando-se em alta coesão, baixo acoplamento e facilidade de extensão.
+O sistema adota os princípios fundamentais da **Programação Orientada a Objetos (POO)**, focando-se na facilidade de extensão.
 
 ### 2.1. Abstração e Desacoplamento (Interfaces)
 O núcleo do desenho baseia-se em abstrações contratuais explícitas:
