@@ -1,287 +1,821 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Battleship - Documentação do Projeto</title>
-    <style>
-        :root {
-            --bg: #0f172a;
-            --card-bg: #1e293b;
-            --text: #e2e8f0;
-            --text-muted: #94a3b8;
-            --accent: #38bdf8;
-            --accent-hover: #0284c7;
-            --border: #334155;
-            --callout-bg: #1e3a5f;
-            --callout-border: #38bdf8;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            padding: 2.5rem 1rem;
-            display: flex;
-            justify-content: center;
-        }
-
-        .container {
-            max-width: 820px;
-            width: 100%;
-            background: var(--card-bg);
-            padding: 2.5rem;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-        }
-
-        header {
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        h1 {
-            font-size: 2.25rem;
-            color: #fff;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        h2 {
-            font-size: 1.4rem;
-            color: #f1f5f9;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-            border-left: 4px solid var(--accent);
-            padding-left: 0.75rem;
-        }
-
-        p {
-            margin-bottom: 1rem;
-            color: var(--text);
-        }
-
-        .subtitle {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.25rem 0 1.75rem 0;
-            font-size: 0.95rem;
-            overflow-x: auto;
-            display: block;
-        }
-
-        @media (min-width: 600px) {
-            table {
-                display: table;
-            }
-        }
-
-        th, td {
-            padding: 0.75rem 1rem;
-            border: 1px solid var(--border);
-            text-align: left;
-        }
-
-        th {
-            background-color: rgba(255, 255, 255, 0.05);
-            color: #f8fafc;
-            font-weight: 600;
-        }
-
-        tr:nth-child(even) {
-            background-color: rgba(255, 255, 255, 0.02);
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        ol {
-            margin: 1rem 0 1.5rem 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.65rem;
-        }
-
-        li strong {
-            color: #fff;
-        }
-
-        .callout {
-            background: var(--callout-bg);
-            border-left: 4px solid var(--callout-border);
-            padding: 1rem 1.25rem;
-            border-radius: 0 8px 8px 0;
-            margin: 1.5rem 0;
-            color: #bae6fd;
-            font-size: 0.95rem;
-        }
-
-        .callout strong {
-            color: #fff;
-        }
-
-        ul.links {
-            list-style: none;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 0.75rem;
-            margin-top: 1rem;
-        }
-
-        ul.links li a {
-            display: block;
-            padding: 0.6rem 1rem;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            color: var(--accent);
-            text-decoration: none;
-            text-align: center;
-            transition: all 0.2s ease;
-        }
-
-        ul.links li a:hover {
-            background: var(--accent);
-            color: #0f172a;
-            font-weight: 600;
-            border-color: var(--accent);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Battleship · Documentação Técnica</title>
+<meta name="description" content="Documentação técnica do pacote iscteiul.ista.battleship: arquitetura, classes, métodos e regras de negócio.">
+<style>
+:root {
+  --bg: #f7f8fa; --surface: #ffffff; --surface-2: #f1f3f6; --text: #1b2330; --muted: #5b6676;
+  --border: #dde2e9; --accent: #0b6bcb; --accent-soft: #e6f0fb; --code-bg: #f1f3f6;
+  --iface: #7a4bd1; --iface-soft: #f1ebfc; --abstract: #b26a00; --abstract-soft: #fcf2e3;
+  --concrete: #0b6bcb; --enum: #1a8a5a; --enum-soft: #e5f5ee; --warn: #b3261e; --warn-soft: #fdeceb;
+  --note-soft: #fff8e1; --note: #8a6d00; --shadow: 0 1px 2px rgba(16,24,40,.06), 0 1px 3px rgba(16,24,40,.08);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1117; --surface: #161b22; --surface-2: #1c222b; --text: #e6edf3; --muted: #97a1ad;
+    --border: #2b323c; --accent: #58a6ff; --accent-soft: #14253b; --code-bg: #1c222b;
+    --iface: #b392f0; --iface-soft: #231a36; --abstract: #e3a64a; --abstract-soft: #2d2213;
+    --concrete: #58a6ff; --enum: #4cc38a; --enum-soft: #12291f; --warn: #ff7b72; --warn-soft: #321716;
+    --note-soft: #2a2410; --note: #e3c45a; --shadow: none;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1117; --surface: #161b22; --surface-2: #1c222b; --text: #e6edf3; --muted: #97a1ad;
+  --border: #2b323c; --accent: #58a6ff; --accent-soft: #14253b; --code-bg: #1c222b;
+  --iface: #b392f0; --iface-soft: #231a36; --abstract: #e3a64a; --abstract-soft: #2d2213;
+  --concrete: #58a6ff; --enum: #4cc38a; --enum-soft: #12291f; --warn: #ff7b72; --warn-soft: #321716;
+  --note-soft: #2a2410; --note: #e3c45a; --shadow: none;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+code, pre, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .88em; }
+code { background: var(--code-bg); padding: .1em .35em; border-radius: 4px; }
+pre { background: var(--code-bg); padding: 14px 16px; border-radius: 8px; overflow-x: auto; border: 1px solid var(--border); }
+pre code { background: none; padding: 0; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.topbar { position: sticky; top: 0; z-index: 20; height: 56px; display: flex; align-items: center; gap: 16px; padding: 0 20px; background: var(--surface); border-bottom: 1px solid var(--border); }
+.brand { font-weight: 700; letter-spacing: -.01em; white-space: nowrap; }
+.brand small { font-weight: 500; color: var(--muted); margin-left: 6px; }
+.search { flex: 1; max-width: 360px; margin-left: auto; }
+.search input { width: 100%; padding: 7px 12px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); font: inherit; }
+.icon-btn { border: 1px solid var(--border); background: var(--surface-2); color: var(--text); border-radius: 6px; padding: 6px 10px; cursor: pointer; font: inherit; }
+.menu-btn { display: none; }
+.layout { display: grid; grid-template-columns: 260px minmax(0, 1fr); max-width: 1320px; margin: 0 auto; }
+nav.sidebar { position: sticky; top: 56px; height: calc(100vh - 56px); overflow-y: auto; padding: 20px 12px 40px 20px; border-right: 1px solid var(--border); }
+nav.sidebar h4 { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 18px 8px 6px; }
+nav.sidebar a { display: flex; align-items: center; gap: 8px; padding: 4px 8px; border-radius: 5px; color: var(--text); font-size: 14px; }
+nav.sidebar a:hover { background: var(--surface-2); text-decoration: none; }
+nav.sidebar a.active { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+main { padding: 32px 40px 80px; min-width: 0; }
+section { margin-bottom: 56px; }
+h1 { font-size: 30px; margin: 0 0 6px; letter-spacing: -.02em; }
+h2 { font-size: 22px; margin: 0 0 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border); letter-spacing: -.01em; }
+h3 { font-size: 17px; margin: 28px 0 10px; }
+.lead { color: var(--muted); font-size: 16px; max-width: 760px; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 18px 0 0; font-size: 13px; color: var(--muted); }
+.meta b { color: var(--text); font-weight: 600; }
+.badge { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .04em; padding: 1px 7px; border-radius: 4px; text-transform: uppercase; vertical-align: middle; }
+.b-iface { color: var(--iface); background: var(--iface-soft); }
+.b-abstract { color: var(--abstract); background: var(--abstract-soft); }
+.b-class { color: var(--concrete); background: var(--accent-soft); }
+.b-enum { color: var(--enum); background: var(--enum-soft); }
+.sev-high { color: var(--warn); background: var(--warn-soft); }
+.sev-mid { color: var(--note); background: var(--note-soft); }
+.sev-low { color: var(--muted); background: var(--surface-2); }
+.dot { width: 8px; height: 8px; border-radius: 2px; flex: none; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px 22px; box-shadow: var(--shadow); }
+.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.stat { font-size: 26px; font-weight: 700; }
+.stat-label { color: var(--muted); font-size: 13px; }
+.table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 9px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+th { background: var(--surface-2); font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; }
+tr:last-child td { border-bottom: none; }
+td.sig { white-space: nowrap; }
+.mod { color: var(--muted); }
+.cls { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 28px; box-shadow: var(--shadow); overflow: hidden; }
+.cls-head { padding: 18px 22px 14px; border-bottom: 1px solid var(--border); }
+.cls-head h3 { margin: 0 0 4px; font-size: 20px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.cls-decl { color: var(--muted); font-size: 13px; }
+.cls-body { padding: 4px 22px 22px; }
+.cls-body h4 { font-size: 12px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin: 20px 0 8px; }
+.kv { display: grid; grid-template-columns: max-content 1fr; gap: 4px 16px; font-size: 14px; margin: 12px 0; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; }
+.diagram { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; overflow-x: auto; }
+.diagram svg { display: block; min-width: 760px; width: 100%; height: auto; }
+.diagram text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; fill: var(--text); }
+.shapes { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 14px; margin: 12px 0; }
+.shape { text-align: center; font-size: 13px; color: var(--muted); }
+.board { display: inline-grid; grid-template-columns: repeat(5, 18px); gap: 2px; margin-bottom: 6px; }
+.board span { width: 18px; height: 18px; border-radius: 3px; background: var(--surface-2); border: 1px solid var(--border); }
+.board span.on { background: var(--accent); border-color: var(--accent); }
+.board span.anchor { background: var(--abstract); border-color: var(--abstract); }
+.steps { counter-reset: s; list-style: none; padding: 0; margin: 0; }
+.steps li { counter-increment: s; position: relative; padding: 0 0 14px 38px; }
+.steps li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-weight: 700; font-size: 13px; display: grid; place-items: center; }
+.hidden-by-search { display: none !important; }
+footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--border); padding-top: 20px; }
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  nav.sidebar { display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0; height: auto; background: var(--surface); z-index: 15; border-right: none; }
+  nav.sidebar.open { display: block; }
+  .menu-btn { display: inline-block; }
+  main { padding: 24px 16px 60px; }
+  .search { max-width: none; }
+  .brand small { display: none; }
+  td.sig { white-space: normal; }
+}
+</style>
 </head>
 <body>
 
-<main class="container">
-    <header>
-        <h1>⚓ Battleship</h1>
-        <p class="subtitle">Basic academic version of Battleship game to build upon.</p>
-    </header>
+<header class="topbar">
+  <button class="icon-btn menu-btn" id="menuBtn" aria-label="Abrir menu">☰</button>
+  <div class="brand">Battleship <small>Documentação Técnica · v1.0</small></div>
+  <div class="search"><input id="search" type="search" placeholder="Pesquisar classes e métodos…" aria-label="Pesquisar"></div>
+  <button class="icon-btn" id="themeBtn" aria-label="Alternar tema">◐</button>
+</header>
 
-    <section id="group">
-        <h2>Group</h2>
-        <table>
-            <thead>
-            <tr>
-                <th>Student</th>
-                <th>Student number</th>
-                <th>Course</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>Pedro Coelho</td>
-                <td>129825</td>
-                <td>LEI</td>
-            </tr>
-            <tr>
-                <td>João Almeida</td>
-                <td>129862</td>
-                <td>LEI</td>
-            </tr>
-            <tr>
-                <td>Martim Barros</td>
-                <td>129873</td>
-                <td>LEI</td>
-            </tr>
-            </tbody>
-        </table>
-    </section>
+<div class="layout">
+<nav class="sidebar" id="sidebar">
+  <h4>Guia</h4>
+  <a href="#overview">Visão geral</a>
+  <a href="#architecture">Arquitetura</a>
+  <a href="#diagram">Diagrama de classes</a>
+  <a href="#rules">Regras de negócio</a>
+  <a href="#flows">Fluxos principais</a>
+  <h4>Interfaces</h4>
+  <a href="#IPosition"><span class="dot" style="background:var(--iface)"></span>IPosition</a>
+  <a href="#IShip"><span class="dot" style="background:var(--iface)"></span>IShip</a>
+  <a href="#IFleet"><span class="dot" style="background:var(--iface)"></span>IFleet</a>
+  <a href="#IGame"><span class="dot" style="background:var(--iface)"></span>IGame</a>
+  <h4>Enumerações</h4>
+  <a href="#Compass"><span class="dot" style="background:var(--enum)"></span>Compass</a>
+  <h4>Classes</h4>
+  <a href="#Position"><span class="dot" style="background:var(--concrete)"></span>Position</a>
+  <a href="#Ship"><span class="dot" style="background:var(--abstract)"></span>Ship</a>
+  <a href="#Barge"><span class="dot" style="background:var(--concrete)"></span>Barge</a>
+  <a href="#Caravel"><span class="dot" style="background:var(--concrete)"></span>Caravel</a>
+  <a href="#Carrack"><span class="dot" style="background:var(--concrete)"></span>Carrack</a>
+  <a href="#Frigate"><span class="dot" style="background:var(--concrete)"></span>Frigate</a>
+  <a href="#Galleon"><span class="dot" style="background:var(--concrete)"></span>Galleon</a>
+  <a href="#Fleet"><span class="dot" style="background:var(--concrete)"></span>Fleet</a>
+  <a href="#Game"><span class="dot" style="background:var(--concrete)"></span>Game</a>
+  <a href="#Tasks"><span class="dot" style="background:var(--concrete)"></span>Tasks</a>
+  <h4>Anexos</h4>
+  <a href="#issues">Problemas conhecidos</a>
+  <a href="#glossary">Glossário</a>
+</nav>
 
-    <section id="rules">
-        <h2>Game Rules</h2>
-        <ol>
-            <li><strong>Setup:</strong> Both players start by secretly positioning their fleet on their respective grids.</li>
-            <li><strong>Taking Turns:</strong> Players take turns attacking the opponent. On your turn, you must fire a volley of <strong>three shots</strong>, providing the coordinates (row, column) for each shot.</li>
-            <li><strong>Feedback:</strong> After the three shots are fired, the opponent must announce the exact result of the volley. They need to specify if each shot was a "miss" (water) or a "hit", including the type of ship that was hit and if it was completely sunk.</li>
-            <li><strong>Tracking Progress:</strong> Each player must keep track of their shots on the opponent's grid, marking hits, misses, and sunken ships to plan their next moves.</li>
-            <li><strong>Winning the Game:</strong> The first player to successfully hit and sink all the ships in the opponent's fleet wins.</li>
-        </ol>
+<main id="content">
 
-        <div class="callout">
-            <strong>Note:</strong> The quantity and shape of the ships in this version follow the traditional Portuguese rules, which differ from standard international or online variations.
-        </div>
-    </section>
+<section id="overview" data-search>
+  <h1>Battleship — Documentação Técnica</h1>
+  <p class="lead">Referência completa do pacote <code>iscteiul.ista.battleship</code>: uma implementação em Java do jogo Batalha Naval, com navios inspirados na frota portuguesa dos Descobrimentos. Este documento descreve a arquitetura, cada tipo público, os seus métodos e as regras de negócio que implementam.</p>
+  <div class="meta">
+    <span><b>Pacote:</b> iscteiul.ista.battleship</span>
+    <span><b>Linguagem:</b> Java</span>
+    <span><b>Dependências:</b> Apache Log4j 2</span>
+    <span><b>Tabuleiro:</b> 10 × 10</span>
+  </div>
 
-    <section id="ship-types">
-        <h2>Ship Types</h2>
-        <table>
-            <thead>
-            <tr>
-                <th>Batalha Naval</th>
-                <th>Descobrimentos</th>
-                <th>English</th>
-                <th class="text-center">Dimensão</th>
-                <th class="text-center">#Navios</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>Porta-aviões</td>
-                <td>Galeão</td>
-                <td>Galleon</td>
-                <td class="text-center">5</td>
-                <td class="text-center">1</td>
-            </tr>
-            <tr>
-                <td>Navio de 4 canhões</td>
-                <td>Fragata</td>
-                <td>Frigate</td>
-                <td class="text-center">4</td>
-                <td class="text-center">1</td>
-            </tr>
-            <tr>
-                <td>Navio de 3 canhões</td>
-                <td>Nau</td>
-                <td>Carrack</td>
-                <td class="text-center">3</td>
-                <td class="text-center">2</td>
-            </tr>
-            <tr>
-                <td>Navio de 2 canhões</td>
-                <td>Caravela</td>
-                <td>Caravel</td>
-                <td class="text-center">2</td>
-                <td class="text-center">3</td>
-            </tr>
-            <tr>
-                <td>Submarino</td>
-                <td>Barca</td>
-                <td>Barge</td>
-                <td class="text-center">1</td>
-                <td class="text-center">4</td>
-            </tr>
-            </tbody>
-        </table>
-    </section>
+  <h3>Resumo do pacote</h3>
+  <div class="grid-3">
+    <div class="card"><div class="stat">4</div><div class="stat-label">Interfaces — contratos de domínio</div></div>
+    <div class="card"><div class="stat">1 + 5</div><div class="stat-label">Classe abstrata <code>Ship</code> e cinco tipos de navio</div></div>
+    <div class="card"><div class="stat">4</div><div class="stat-label">Classes de suporte: <code>Position</code>, <code>Fleet</code>, <code>Game</code>, <code>Tasks</code></div></div>
+  </div>
 
-    <section id="ship-links">
-        <h2>Link Ships (Wikipedia)</h2>
-        <p>For more information about the ships used in the Discoveries Battleship Game:</p>
-        <ul class="links">
-            <li><a href="https://en.wikipedia.org/wiki/Galleon" target="_blank" rel="noopener noreferrer">Galleon</a></li>
-            <li><a href="https://en.wikipedia.org/wiki/Frigate" target="_blank" rel="noopener noreferrer">Frigate</a></li>
-            <li><a href="https://en.wikipedia.org/wiki/Carrack" target="_blank" rel="noopener noreferrer">Carrack</a></li>
-            <li><a href="https://en.wikipedia.org/wiki/Caravel" target="_blank" rel="noopener noreferrer">Caravel</a></li>
-            <li><a href="https://en.wikipedia.org/wiki/Barge" target="_blank" rel="noopener noreferrer">Barge</a></li>
-        </ul>
-    </section>
+  <h3>Índice de tipos</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Tipo</th><th>Categoria</th><th>Responsabilidade</th></tr></thead>
+    <tbody>
+      <tr><td><a href="#IPosition"><code>IPosition</code></a></td><td><span class="badge b-iface">interface</span></td><td>Contrato de uma célula do tabuleiro.</td></tr>
+      <tr><td><a href="#IShip"><code>IShip</code></a></td><td><span class="badge b-iface">interface</span></td><td>Contrato de um navio: geometria, estado e disparos.</td></tr>
+      <tr><td><a href="#IFleet"><code>IFleet</code></a></td><td><span class="badge b-iface">interface</span></td><td>Contrato da frota; define <code>BOARD_SIZE</code> e <code>FLEET_SIZE</code>.</td></tr>
+      <tr><td><a href="#IGame"><code>IGame</code></a></td><td><span class="badge b-iface">interface</span></td><td>Contrato de uma partida: disparar e consultar estatísticas.</td></tr>
+      <tr><td><a href="#Compass"><code>Compass</code></a></td><td><span class="badge b-enum">enum</span></td><td>Orientação de um navio (N, S, E, O, desconhecida).</td></tr>
+      <tr><td><a href="#Position"><code>Position</code></a></td><td><span class="badge b-class">classe</span></td><td>Coordenada (linha, coluna) com estado de ocupação e de impacto.</td></tr>
+      <tr><td><a href="#Ship"><code>Ship</code></a></td><td><span class="badge b-abstract">abstrata</span></td><td>Implementação base de <code>IShip</code> e fábrica de navios.</td></tr>
+      <tr><td><a href="#Barge"><code>Barge</code></a> · <a href="#Caravel"><code>Caravel</code></a> · <a href="#Carrack"><code>Carrack</code></a> · <a href="#Frigate"><code>Frigate</code></a> · <a href="#Galleon"><code>Galleon</code></a></td><td><span class="badge b-class">classe</span></td><td>Tipos concretos de navio, cada um com tamanho e forma próprios.</td></tr>
+      <tr><td><a href="#Fleet"><code>Fleet</code></a></td><td><span class="badge b-class">classe</span></td><td>Coleção de navios com validação de limites e colisões.</td></tr>
+      <tr><td><a href="#Game"><code>Game</code></a></td><td><span class="badge b-class">classe</span></td><td>Motor da partida: processa tiros e mantém contadores.</td></tr>
+      <tr><td><a href="#Tasks"><code>Tasks</code></a></td><td><span class="badge b-class">classe</span></td><td>Interface de consola (leitura de comandos) e cenários de teste manuais.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="architecture" data-search>
+  <h2>Arquitetura</h2>
+  <p>O sistema está organizado em três camadas lógicas dentro de um único pacote. Cada conceito de domínio é exposto através de uma interface e implementado por uma classe concreta; o código cliente (<code>Game</code>, <code>Fleet</code>) depende das interfaces.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Camada</th><th>Tipos</th><th>Descrição</th></tr></thead>
+    <tbody>
+      <tr><td><b>Apresentação / entrada</b></td><td><code>Tasks</code></td><td>Lê comandos do <code>System.in</code>, constrói navios e frotas, dispara rajadas e regista resultados via Log4j.</td></tr>
+      <tr><td><b>Controlo</b></td><td><code>IGame</code>, <code>Game</code>, <code>IFleet</code>, <code>Fleet</code></td><td>Aplica as regras: colocação válida de navios, validação de tiros e contagem de estatísticas.</td></tr>
+      <tr><td><b>Domínio</b></td><td><code>IShip</code>, <code>Ship</code> e subclasses, <code>IPosition</code>, <code>Position</code>, <code>Compass</code></td><td>Modela o tabuleiro, as embarcações, a sua geometria e o seu estado de dano.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Padrões e princípios</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Padrão / princípio</th><th>Onde</th><th>Efeito</th></tr></thead>
+    <tbody>
+      <tr><td>Programação por interfaces (DIP)</td><td><code>Game</code> recebe <code>IFleet</code>; <code>Fleet</code> guarda <code>List&lt;IShip&gt;</code></td><td>Permite substituir implementações e usar <em>mocks</em> em testes.</td></tr>
+      <tr><td>Template Method</td><td><code>Ship</code> define o algoritmo; subclasses fornecem <code>getSize()</code> e preenchem <code>positions</code></td><td>A lógica de colisão, limites e afundamento é escrita uma só vez.</td></tr>
+      <tr><td>Simple Factory</td><td><code>Ship.buildShip(String, Compass, Position)</code></td><td>Converte o nome textual de um navio na instância correta.</td></tr>
+      <tr><td>Aberto/Fechado (OCP)</td><td>Hierarquia de <code>Ship</code></td><td>Novo tipo de navio = nova subclasse + um <code>case</code> na fábrica.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="diagram" data-search>
+  <h2>Diagrama de classes</h2>
+  <p>Setas cheias com triângulo representam herança (<em>extends</em>); tracejadas com triângulo representam realização (<em>implements</em>); setas abertas representam associação ou dependência.</p>
+  <div class="diagram">
+  <svg viewBox="0 0 1000 530" role="img" aria-label="Diagrama de classes do pacote battleship">
+    <defs>
+      <marker id="tri" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="var(--surface)" stroke="var(--muted)" stroke-width="1.2"/>
+      </marker>
+      <marker id="arr" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10" fill="none" stroke="var(--muted)" stroke-width="1.5"/>
+      </marker>
+    </defs>
+    <style>
+      .box { fill: var(--surface); stroke-width: 1.5; }
+      .i { stroke: var(--iface); } .a { stroke: var(--abstract); } .c { stroke: var(--concrete); } .e { stroke: var(--enum); }
+      .st { font-size: 11px; fill: var(--muted); font-style: italic; }
+      .nm { font-size: 14px; font-weight: 700; }
+      .ln { stroke: var(--muted); stroke-width: 1.4; fill: none; }
+      .dash { stroke-dasharray: 5 4; }
+      .lbl { font-size: 11px; fill: var(--muted); }
+    </style>
+    <rect class="box i" x="40"  y="20" width="150" height="54" rx="6"/><text class="st" x="115" y="40" text-anchor="middle">«interface»</text><text class="nm" x="115" y="60" text-anchor="middle">IGame</text>
+    <rect class="box i" x="290" y="20" width="150" height="54" rx="6"/><text class="st" x="365" y="40" text-anchor="middle">«interface»</text><text class="nm" x="365" y="60" text-anchor="middle">IFleet</text>
+    <rect class="box i" x="540" y="20" width="150" height="54" rx="6"/><text class="st" x="615" y="40" text-anchor="middle">«interface»</text><text class="nm" x="615" y="60" text-anchor="middle">IShip</text>
+    <rect class="box i" x="810" y="20" width="150" height="54" rx="6"/><text class="st" x="885" y="40" text-anchor="middle">«interface»</text><text class="nm" x="885" y="60" text-anchor="middle">IPosition</text>
+
+    <rect class="box c" x="40"  y="170" width="150" height="46" rx="6"/><text class="nm" x="115" y="198" text-anchor="middle">Game</text>
+    <rect class="box c" x="290" y="170" width="150" height="46" rx="6"/><text class="nm" x="365" y="198" text-anchor="middle">Fleet</text>
+    <rect class="box a" x="540" y="164" width="150" height="54" rx="6"/><text class="st" x="615" y="184" text-anchor="middle">«abstract»</text><text class="nm" x="615" y="204" text-anchor="middle">Ship</text>
+    <rect class="box c" x="810" y="170" width="150" height="46" rx="6"/><text class="nm" x="885" y="198" text-anchor="middle">Position</text>
+
+    <path class="ln dash" d="M115,170 V74" marker-end="url(#tri)"/>
+    <path class="ln dash" d="M365,170 V74" marker-end="url(#tri)"/>
+    <path class="ln dash" d="M615,164 V74" marker-end="url(#tri)"/>
+    <path class="ln dash" d="M885,170 V74" marker-end="url(#tri)"/>
+
+    <path class="ln" d="M190,47 H290" marker-end="url(#arr)"/><text class="lbl" x="240" y="40" text-anchor="middle">fleet</text>
+    <path class="ln" d="M440,47 H540" marker-end="url(#arr)"/><text class="lbl" x="490" y="40" text-anchor="middle">ships 0..*</text>
+    <path class="ln" d="M690,47 H810" marker-end="url(#arr)"/><text class="lbl" x="750" y="40" text-anchor="middle">positions 1..5</text>
+
+    <rect class="box e" x="810" y="300" width="150" height="54" rx="6"/><text class="st" x="885" y="320" text-anchor="middle">«enum»</text><text class="nm" x="885" y="340" text-anchor="middle">Compass</text>
+    <path class="ln" d="M690,205 Q770,260 810,318" marker-end="url(#arr)"/><text class="lbl" x="770" y="250" text-anchor="middle">bearing</text>
+
+    <rect class="box c" x="330" y="430" width="110" height="42" rx="6"/><text class="nm" x="385" y="456" text-anchor="middle">Barge</text>
+    <rect class="box c" x="455" y="430" width="110" height="42" rx="6"/><text class="nm" x="510" y="456" text-anchor="middle">Caravel</text>
+    <rect class="box c" x="580" y="430" width="110" height="42" rx="6"/><text class="nm" x="635" y="456" text-anchor="middle">Carrack</text>
+    <rect class="box c" x="705" y="430" width="110" height="42" rx="6"/><text class="nm" x="760" y="456" text-anchor="middle">Frigate</text>
+    <rect class="box c" x="830" y="430" width="110" height="42" rx="6"/><text class="nm" x="885" y="456" text-anchor="middle">Galleon</text>
+    <path class="ln" d="M385,430 V390 H885 V430"/>
+    <path class="ln" d="M510,430 V390"/><path class="ln" d="M635,430 V390"/><path class="ln" d="M760,430 V390"/>
+    <path class="ln" d="M615,390 V218" marker-end="url(#tri)"/>
+    <text class="lbl" x="385" y="490" text-anchor="middle">1 célula</text>
+    <text class="lbl" x="510" y="490" text-anchor="middle">2 células</text>
+    <text class="lbl" x="635" y="490" text-anchor="middle">3 células</text>
+    <text class="lbl" x="760" y="490" text-anchor="middle">4 células</text>
+    <text class="lbl" x="885" y="490" text-anchor="middle">5 células</text>
+
+    <rect class="box c" x="40" y="330" width="150" height="46" rx="6"/><text class="nm" x="115" y="358" text-anchor="middle">Tasks</text>
+    <path class="ln dash" d="M115,330 V216" marker-end="url(#arr)"/><text class="lbl" x="122" y="280">cria</text>
+    <path class="ln dash" d="M190,345 Q300,300 365,216" marker-end="url(#arr)"/><text class="lbl" x="270" y="296">buildFleet()</text>
+    <path class="ln dash" d="M190,365 Q440,370 575,218" marker-end="url(#arr)"/><text class="lbl" x="420" y="352">buildShip()</text>
+  </svg>
+  </div>
+</section>
+
+<section id="rules" data-search>
+  <h2>Regras de negócio</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>ID</th><th>Regra</th><th>Implementação</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">RN-01</td><td>O tabuleiro tem 10 × 10 células, indexadas de 0 a 9.</td><td><code>IFleet.BOARD_SIZE</code></td></tr>
+      <tr><td class="mono">RN-02</td><td>A frota tem, no máximo, 10 navios.</td><td><code>IFleet.FLEET_SIZE</code>, <code>Fleet.addShip</code></td></tr>
+      <tr><td class="mono">RN-03</td><td>Todas as células de um navio têm de estar dentro do tabuleiro.</td><td><code>Fleet.isInsideBoard</code></td></tr>
+      <tr><td class="mono">RN-04</td><td>Dois navios não se podem tocar, nem na diagonal: tem de haver pelo menos uma célula de água entre eles.</td><td><code>Fleet.colisionRisk</code> → <code>Ship.tooCloseTo</code> → <code>Position.isAdjacentTo</code></td></tr>
+      <tr><td class="mono">RN-05</td><td>Um tiro fora do tabuleiro é inválido e é apenas contabilizado.</td><td><code>Game.validShot</code>, <code>countInvalidShots</code></td></tr>
+      <tr><td class="mono">RN-06</td><td>Um tiro numa célula já alvejada é repetido e é apenas contabilizado.</td><td><code>Game.repeatedShot</code>, <code>countRepeatedShots</code></td></tr>
+      <tr><td class="mono">RN-07</td><td>Um navio afunda quando todas as suas células foram atingidas.</td><td><code>Ship.stillFloating</code></td></tr>
+      <tr><td class="mono">RN-08</td><td>Cada rajada tem 3 tiros.</td><td><code>Tasks.NUMBER_SHOTS</code>, <code>Tasks.firingRound</code></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Tipos de navio</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Classe</th><th>Categoria</th><th>Comando</th><th>Tamanho</th><th>Forma</th></tr></thead>
+    <tbody>
+      <tr><td><code>Barge</code></td><td>Barca</td><td class="mono">barca</td><td>1</td><td>Célula única</td></tr>
+      <tr><td><code>Caravel</code></td><td>Caravela</td><td class="mono">caravela</td><td>2</td><td>Linha reta</td></tr>
+      <tr><td><code>Carrack</code></td><td>Nau</td><td class="mono">nau</td><td>3</td><td>Linha reta</td></tr>
+      <tr><td><code>Frigate</code></td><td>Fragata</td><td class="mono">fragata</td><td>4</td><td>Linha reta</td></tr>
+      <tr><td><code>Galleon</code></td><td>Galeão</td><td class="mono">galeao</td><td>5</td><td>Forma em T, rodada segundo a orientação</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="flows" data-search>
+  <h2>Fluxos principais</h2>
+  <h3>Construção de uma frota</h3>
+  <ol class="steps">
+    <li><code>Tasks.buildFleet</code> lê, para cada navio, <code>&lt;tipo&gt; &lt;linha&gt; &lt;coluna&gt; &lt;orientação&gt;</code>.</li>
+    <li><code>Compass.charToCompass</code> converte o carácter (<code>n</code>, <code>s</code>, <code>e</code>, <code>o</code>) na orientação.</li>
+    <li><code>Ship.buildShip</code> instancia a subclasse certa; o construtor calcula a lista de <code>positions</code>.</li>
+    <li><code>Fleet.addShip</code> verifica capacidade (RN-02), limites (RN-03) e distância a outros navios (RN-04). Devolve <code>false</code> se alguma falhar.</li>
+  </ol>
+  <h3>Processamento de um tiro</h3>
+  <ol class="steps">
+    <li><code>Game.fire(pos)</code> valida a posição (RN-05). Se for inválida, incrementa <code>countInvalidShots</code> e devolve <code>null</code>.</li>
+    <li>Se o tiro já foi feito (RN-06), incrementa <code>countRepeatedShots</code> e devolve <code>null</code>.</li>
+    <li>Caso contrário regista o tiro e procura o navio com <code>fleet.shipAt(pos)</code>.</li>
+    <li>Se houver navio, chama <code>ship.shoot(pos)</code> e incrementa <code>countHits</code>. Se o navio deixar de flutuar, incrementa <code>countSinks</code> e <b>devolve o navio afundado</b>.</li>
+  </ol>
+  <h3>Exemplo de sessão (<code>Tasks.taskD</code>)</h3>
+<pre><code>nova
+galeao 0 0 n   fragata 5 0 e   nau 9 5 e   caravela 2 8 n  ...
+estado          # imprime a frota por categoria
+rajada 0 0 0 1 0 2
+ver             # mostra os tiros válidos no tabuleiro
+mapa            # "batota": mostra a frota
+desisto</code></pre>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Comando</th><th>Constante</th><th>Efeito</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">nova</td><td><code>NOVAFROTA</code></td><td>Constrói uma nova frota (e, na tarefa D, um novo jogo).</td></tr>
+      <tr><td class="mono">estado</td><td><code>STATUS</code></td><td>Invoca <code>fleet.printStatus()</code>.</td></tr>
+      <tr><td class="mono">mapa</td><td><code>BATOTA</code></td><td>Mostra a posição dos navios.</td></tr>
+      <tr><td class="mono">rajada</td><td><code>RAJADA</code></td><td>Lê e dispara 3 tiros; regista acertos, inválidos, repetidos e navios restantes.</td></tr>
+      <tr><td class="mono">ver</td><td><code>VERTIROS</code></td><td>Mostra o tabuleiro com os tiros válidos (<code>X</code>).</td></tr>
+      <tr><td class="mono">desisto</td><td><code>DESISTIR</code></td><td>Termina a sessão com "Bons ventos!".</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="api-interfaces">
+<h2>Referência — Interfaces</h2>
+
+<article class="cls" id="IPosition" data-search>
+  <div class="cls-head"><h3>IPosition <span class="badge b-iface">interface</span></h3><div class="cls-decl mono">public interface IPosition</div></div>
+  <div class="cls-body">
+    <p>Representa uma célula do tabuleiro, identificada por linha e coluna, com dois indicadores de estado: se está ocupada por um navio e se foi atingida.</p>
+    <dl class="kv"><dt>Implementada por</dt><dd><a href="#Position"><code>Position</code></a></dd><dt>Usada por</dt><dd><code>IShip</code>, <code>IFleet</code>, <code>IGame</code></dd></dl>
+    <h4>Métodos</h4>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Assinatura</th><th>Descrição</th></tr></thead>
+      <tbody>
+        <tr><td class="sig mono">int getRow()</td><td>Linha da célula (0 = topo).</td></tr>
+        <tr><td class="sig mono">int getColumn()</td><td>Coluna da célula (0 = esquerda).</td></tr>
+        <tr><td class="sig mono">boolean equals(Object other)</td><td>Duas posições são iguais quando têm a mesma linha e coluna.</td></tr>
+        <tr><td class="sig mono">boolean isAdjacentTo(IPosition other)</td><td><code>true</code> se a outra posição está a no máximo uma célula de distância, incluindo diagonais e a própria célula.</td></tr>
+        <tr><td class="sig mono">void occupy()</td><td>Marca a célula como ocupada.</td></tr>
+        <tr><td class="sig mono">void shoot()</td><td>Marca a célula como atingida.</td></tr>
+        <tr><td class="sig mono">boolean isOccupied()</td><td>Indica se a célula está ocupada.</td></tr>
+        <tr><td class="sig mono">boolean isHit()</td><td>Indica se a célula foi atingida.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</article>
+
+<article class="cls" id="IShip" data-search>
+  <div class="cls-head"><h3>IShip <span class="badge b-iface">interface</span></h3><div class="cls-decl mono">public interface IShip</div></div>
+  <div class="cls-body">
+    <p>Contrato de qualquer embarcação: identidade (categoria, tamanho), geometria no tabuleiro, relação espacial com outros navios e receção de tiros.</p>
+    <dl class="kv"><dt>Implementada por</dt><dd><a href="#Ship"><code>Ship</code></a> e, por herança, todas as suas subclasses</dd></dl>
+    <h4>Métodos</h4>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Assinatura</th><th>Descrição</th></tr></thead>
+      <tbody>
+        <tr><td class="sig mono">String getCategory()</td><td>Nome da categoria em português (ex.: <code>"Fragata"</code>).</td></tr>
+        <tr><td class="sig mono">Integer getSize()</td><td>Número de células ocupadas.</td></tr>
+        <tr><td class="sig mono">List&lt;IPosition&gt; getPositions()</td><td>Todas as células ocupadas pelo navio.</td></tr>
+        <tr><td class="sig mono">IPosition getPosition()</td><td>Posição de referência (âncora) usada na construção.</td></tr>
+        <tr><td class="sig mono">Compass getBearing()</td><td>Orientação do navio.</td></tr>
+        <tr><td class="sig mono">boolean stillFloating()</td><td><code>true</code> enquanto houver pelo menos uma célula não atingida.</td></tr>
+        <tr><td class="sig mono">int getTopMostPos()</td><td>Menor linha ocupada.</td></tr>
+        <tr><td class="sig mono">int getBottomMostPos()</td><td>Maior linha ocupada.</td></tr>
+        <tr><td class="sig mono">int getLeftMostPos()</td><td>Menor coluna ocupada.</td></tr>
+        <tr><td class="sig mono">int getRightMostPos()</td><td>Maior coluna ocupada.</td></tr>
+        <tr><td class="sig mono">boolean occupies(IPosition pos)</td><td>Indica se o navio ocupa a posição.</td></tr>
+        <tr><td class="sig mono">boolean tooCloseTo(IShip other)</td><td><code>true</code> se alguma célula do outro navio é adjacente a este.</td></tr>
+        <tr><td class="sig mono">boolean tooCloseTo(IPosition pos)</td><td><code>true</code> se a posição é adjacente a alguma célula deste navio.</td></tr>
+        <tr><td class="sig mono">void shoot(IPosition pos)</td><td>Regista um impacto na célula correspondente, se existir.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</article>
+
+<article class="cls" id="IFleet" data-search>
+  <div class="cls-head"><h3>IFleet <span class="badge b-iface">interface</span></h3><div class="cls-decl mono">public interface IFleet</div></div>
+  <div class="cls-body">
+    <p>Contrato da frota de um jogador. Define também as constantes globais do jogo.</p>
+    <dl class="kv"><dt>Implementada por</dt><dd><a href="#Fleet"><code>Fleet</code></a></dd><dt>Usada por</dt><dd><code>Game</code>, <code>Tasks</code></dd></dl>
+    <h4>Constantes</h4>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Nome</th><th>Tipo</th><th>Valor</th><th>Descrição</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">BOARD_SIZE</td><td class="mono">Integer</td><td>10</td><td>Dimensão do tabuleiro (quadrado).</td></tr>
+        <tr><td class="mono">FLEET_SIZE</td><td class="mono">Integer</td><td>10</td><td>Número máximo de navios na frota.</td></tr>
+      </tbody>
+    </table></div>
+    <h4>Métodos</h4>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Assinatura</th><th>Descrição</th></tr></thead>
+      <tbody>
+        <tr><td class="sig mono">List&lt;IShip&gt; getShips()</td><td>Todos os navios da frota.</td></tr>
+        <tr><td class="sig mono">boolean addShip(IShip s)</td><td>Adiciona o navio se cumprir as regras RN-02 a RN-04; devolve se foi adicionado.</td></tr>
+        <tr><td class="sig mono">List&lt;IShip&gt; getShipsLike(String category)</td><td>Navios de uma categoria (comparação exata com <code>getCategory()</code>).</td></tr>
+        <tr><td class="sig mono">List&lt;IShip&gt; getFloatingShips()</td><td>Navios ainda não afundados.</td></tr>
+        <tr><td class="sig mono">IShip shipAt(IPosition pos)</td><td>Navio que ocupa a posição, ou <code>null</code>.</td></tr>
+        <tr><td class="sig mono">void printStatus()</td><td>Imprime o estado completo da frota na consola.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</article>
+
+<article class="cls" id="IGame" data-search>
+  <div class="cls-head"><h3>IGame <span class="badge b-iface">interface</span></h3><div class="cls-decl mono">public interface IGame</div></div>
+  <div class="cls-body">
+    <p>Contrato de uma partida sobre uma frota: disparar e consultar estatísticas.</p>
+    <dl class="kv"><dt>Implementada por</dt><dd><a href="#Game"><code>Game</code></a></dd></dl>
+    <h4>Métodos</h4>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Assinatura</th><th>Descrição</th></tr></thead>
+      <tbody>
+        <tr><td class="sig mono">IShip fire(IPosition pos)</td><td>Dispara sobre a posição. Devolve o navio <b>apenas se este tiro o afundou</b>; caso contrário <code>null</code>.</td></tr>
+        <tr><td class="sig mono">List&lt;IPosition&gt; getShots()</td><td>Tiros válidos e não repetidos, por ordem.</td></tr>
+        <tr><td class="sig mono">int getRepeatedShots()</td><td>Número de tiros repetidos.</td></tr>
+        <tr><td class="sig mono">int getInvalidShots()</td><td>Número de tiros fora do tabuleiro.</td></tr>
+        <tr><td class="sig mono">int getHits()</td><td>Número de tiros que atingiram um navio.</td></tr>
+        <tr><td class="sig mono">int getSunkShips()</td><td>Número de navios afundados.</td></tr>
+        <tr><td class="sig mono">int getRemainingShips()</td><td>Número de navios ainda a flutuar.</td></tr>
+        <tr><td class="sig mono">void printValidShots()</td><td>Imprime o tabuleiro com os tiros válidos.</td></tr>
+        <tr><td class="sig mono">void printFleet()</td><td>Imprime o tabuleiro com a posição dos navios.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</article>
+</section>
+
+<section id="api-enums">
+<h2>Referência — Enumerações</h2>
+<article class="cls" id="Compass" data-search>
+  <div class="cls-head"><h3>Compass <span class="badge b-enum">enum</span></h3><div class="cls-decl mono">public enum Compass</div></div>
+  <div class="cls-body">
+    <p>Orientação de um navio. Cada constante está associada a um carácter usado na entrada de dados.</p>
+    <h4>Constantes</h4>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Constante</th><th>Carácter</th><th>Significado</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">NORTH</td><td class="mono">'n'</td><td>Norte</td></tr>
+        <tr><td class="mono">SOUTH</td><td class="mono">'s'</td><td>Sul</td></tr>
+        <tr><td class="mono">EAST</td><td class="mono">'e'</td><td>Este</td></tr>
+        <tr><td class="mono">WEST</td><td class="mono">'o'</td><td>Oeste</td></tr>
+        <tr><td class="mono">UNKNOWN</td><td class="mono">'u'</td><td>Orientação inválida ou não reconhecida</td></tr>
+      </tbody>
+    </table></div>
+    <h4>Métodos</h4>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Assinatura</th><th>Descrição</th></tr></thead>
+      <tbody>
+        <tr><td class="sig mono">char getDirection()</td><td>Carácter associado à constante.</td></tr>
+        <tr><td class="sig mono">String toString()</td><td>O carácter como <code>String</code> (ex.: <code>"n"</code>).</td></tr>
+        <tr><td class="sig mono"><span class="mod">static</span> Compass charToCompass(char ch)</td><td>Converte um carácter na constante correspondente; qualquer outro valor devolve <code>UNKNOWN</code>. Visibilidade de pacote.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</article>
+</section>
+
+<section id="api-classes">
+<h2>Referência — Classes</h2>
+
+<article class="cls" id="Position" data-search>
+  <div class="cls-head"><h3>Position <span class="badge b-class">classe</span></h3><div class="cls-decl mono">public class Position implements IPosition</div></div>
+  <div class="cls-body">
+    <p>Implementação de <code>IPosition</code>. Guarda linha, coluna e os estados de ocupação e impacto (ambos a <code>false</code> na criação).</p>
+    <h4>Atributos</h4>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Nome</th><th>Tipo</th><th>Descrição</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">row</td><td class="mono">int</td><td>Linha.</td></tr>
+        <tr><td class="mono">column</td><td class="mono">int</td><td>Coluna.</td></tr>
+        <tr><td class="mono">isOccupied</td><td class="mono">boolean</td><td>Célula ocupada por um navio.</td></tr>
+        <tr><td class="mono">isHit</td><td class="mono">boolean</td><td>Célula atingida.</td></tr>
+      </tbody>
+    </table></div>
+    <h4>Construtor</h4>
+    <div class="table-wrap"><table><tbody>
+      <tr><td class="sig mono">Position(int row, int column)</td><td>Cria a posição sem ocupação nem impacto.</td></tr>
+    </tbody></table></div>
+    <h4>Métodos</h4>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Assinatura</th><th>Descrição</th></tr></thead>
+      <tbody>
+        <tr><td class="sig mono">int getRow() / int getColumn()</td><td>Coordenadas.</td></tr>
+        <tr><td class="sig mono">boolean equals(Object o)</td><td>Igualdade por linha e coluna com qualquer <code>IPosition</code>.</td></tr>
+        <tr><td class="sig mono">int hashCode()</td><td>Hash de <code>column</code>, <code>isHit</code>, <code>isOccupied</code> e <code>row</code> (ver <a href="#issues">PC-05</a>).</td></tr>
+        <tr><td class="sig mono">boolean isAdjacentTo(IPosition other)</td><td><code>|Δlinha| ≤ 1</code> e <code>|Δcoluna| ≤ 1</code>.</td></tr>
+        <tr><td class="sig mono">void occupy() / void shoot()</td><td>Ativam <code>isOccupied</code> / <code>isHit</code>.</td></tr>
+        <tr><td class="sig mono">boolean isOccupied() / boolean isHit()</td><td>Leitura do estado.</td></tr>
+        <tr><td class="sig mono">String toString()</td><td><code>"Linha = r Coluna = c"</code>.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</article>
+
+<article class="cls" id="Ship" data-search>
+  <div class="cls-head"><h3>Ship <span class="badge b-abstract">abstrata</span></h3><div class="cls-decl mono">public abstract class Ship implements IShip</div></div>
+  <div class="cls-body">
+    <p>Implementação base de todos os navios. Guarda categoria, orientação, posição âncora e a lista de células ocupadas, e implementa a lógica comum (limites, adjacência, disparos, afundamento). As subclasses apenas definem <code>getSize()</code> e preenchem <code>positions</code> no construtor.</p>
+    <dl class="kv"><dt>Subclasses</dt><dd><a href="#Barge">Barge</a>, <a href="#Caravel">Caravel</a>, <a href="#Carrack">Carrack</a>, <a href="#Frigate">Frigate</a>, <a href="#Galleon">Galleon</a></dd></dl>
+    <h4>Atributos</h4>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Nome</th><th>Tipo</th><th>Visibilidade</th><th>Descrição</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">category</td><td class="mono">String</td><td>private</td><td>Nome da categoria.</td></tr>
+        <tr><td class="mono">bearing</td><td class="mono">Compass</td><td>private</td><td>Orientação.</td></tr>
+        <tr><td class="mono">pos</td><td class="mono">IPosition</td><td>private</td><td>Posição âncora.</td></tr>
+        <tr><td class="mono">positions</td><td class="mono">List&lt;IPosition&gt;</td><td>protected</td><td>Células ocupadas (preenchidas pela subclasse).</td></tr>
+        <tr><td class="mono">GALEAO, FRAGATA, NAU, CARAVELA, BARCA</td><td class="mono">static final String</td><td>private</td><td>Chaves textuais aceites pela fábrica.</td></tr>
+      </tbody>
+    </table></div>
+    <h4>Construtor</h4>
+    <div class="table-wrap"><table><tbody>
+      <tr><td class="sig mono">Ship(String category, Compass bearing, IPosition pos)</td><td>Inicializa o estado e uma lista vazia de posições. Usa <code>assert</code> para garantir que <code>bearing</code> e <code>pos</code> não são nulos.</td></tr>
+    </tbody></table></div>
+    <h4>Métodos</h4>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Assinatura</th><th>Descrição</th></tr></thead>
+      <tbody>
+        <tr><td class="sig mono"><span class="mod">static</span> Ship buildShip(String kind, Compass b, Position p)</td><td>Fábrica. <code>kind</code> ∈ {<code>barca</code>, <code>caravela</code>, <code>nau</code>, <code>fragata</code>, <code>galeao</code>}; qualquer outro valor devolve <code>null</code>.</td></tr>
+        <tr><td class="sig mono"><span class="mod">abstract</span> Integer getSize()</td><td>Herdado de <code>IShip</code>; implementado por cada subclasse.</td></tr>
+        <tr><td class="sig mono">String getCategory()</td><td>Categoria.</td></tr>
+        <tr><td class="sig mono">List&lt;IPosition&gt; getPositions()</td><td>Células ocupadas (lista mutável).</td></tr>
+        <tr><td class="sig mono">IPosition getPosition()</td><td>Âncora.</td></tr>
+        <tr><td class="sig mono">Compass getBearing()</td><td>Orientação.</td></tr>
+        <tr><td class="sig mono">boolean stillFloating()</td><td>Percorre as primeiras <code>getSize()</code> células; <code>true</code> se alguma não foi atingida.</td></tr>
+        <tr><td class="sig mono">int getTopMostPos() / getBottomMostPos()</td><td>Linha mínima / máxima.</td></tr>
+        <tr><td class="sig mono">int getLeftMostPos() / getRightMostPos()</td><td>Coluna mínima / máxima.</td></tr>
+        <tr><td class="sig mono">boolean occupies(IPosition pos)</td><td>Pesquisa linear por igualdade.</td></tr>
+        <tr><td class="sig mono">boolean tooCloseTo(IShip other)</td><td>Delega em <code>tooCloseTo(IPosition)</code> para cada célula do outro navio.</td></tr>
+        <tr><td class="sig mono">boolean tooCloseTo(IPosition pos)</td><td>Alguma célula deste navio é adjacente a <code>pos</code>.</td></tr>
+        <tr><td class="sig mono">void shoot(IPosition pos)</td><td>Chama <code>shoot()</code> na célula igual a <code>pos</code>.</td></tr>
+        <tr><td class="sig mono">String toString()</td><td><code>"[categoria orientação posição]"</code>.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</article>
+
+<article class="cls" id="Barge" data-search>
+  <div class="cls-head"><h3>Barge <span class="badge b-class">classe</span></h3><div class="cls-decl mono">public class Barge extends Ship</div></div>
+  <div class="cls-body">
+    <dl class="kv"><dt>Categoria</dt><dd>"Barca"</dd><dt>Tamanho</dt><dd>1</dd></dl>
+    <p>Ocupa apenas a posição âncora; a orientação é irrelevante e não é validada.</p>
+    <h4>Construtor</h4>
+    <div class="table-wrap"><table><tbody>
+      <tr><td class="sig mono">Barge(Compass bearing, IPosition pos)</td><td>Adiciona a célula <code>(row, col)</code>.</td></tr>
+    </tbody></table></div>
+  </div>
+</article>
+
+<article class="cls" id="Caravel" data-search>
+  <div class="cls-head"><h3>Caravel <span class="badge b-class">classe</span></h3><div class="cls-decl mono">public class Caravel extends Ship</div></div>
+  <div class="cls-body">
+    <dl class="kv"><dt>Categoria</dt><dd>"Caravela"</dd><dt>Tamanho</dt><dd>2</dd></dl>
+    <p>Navio em linha reta. <code>NORTH</code>/<code>SOUTH</code> ocupam células para baixo a partir da âncora; <code>EAST</code>/<code>WEST</code> ocupam células para a direita.</p>
+    <h4>Construtor</h4>
+    <div class="table-wrap"><table><tbody>
+      <tr><td class="sig mono">Caravel(Compass bearing, IPosition pos)</td><td>Lança <code>NullPointerException</code> se <code>bearing == null</code> e <code>IllegalArgumentException</code> se for <code>UNKNOWN</code>.</td></tr>
+    </tbody></table></div>
+  </div>
+</article>
+
+<article class="cls" id="Carrack" data-search>
+  <div class="cls-head"><h3>Carrack <span class="badge b-class">classe</span></h3><div class="cls-decl mono">public class Carrack extends Ship</div></div>
+  <div class="cls-body">
+    <dl class="kv"><dt>Categoria</dt><dd>"Nau"</dd><dt>Tamanho</dt><dd>3</dd></dl>
+    <p>Navio em linha reta; segue a mesma regra de orientação que <code>Caravel</code>.</p>
+    <h4>Construtor</h4>
+    <div class="table-wrap"><table><tbody>
+      <tr><td class="sig mono">Carrack(Compass bearing, IPosition pos)</td><td>Lança <code>IllegalArgumentException</code> para <code>UNKNOWN</code>.</td></tr>
+    </tbody></table></div>
+  </div>
+</article>
+
+<article class="cls" id="Frigate" data-search>
+  <div class="cls-head"><h3>Frigate <span class="badge b-class">classe</span></h3><div class="cls-decl mono">public class Frigate extends Ship</div></div>
+  <div class="cls-body">
+    <dl class="kv"><dt>Categoria</dt><dd>"Fragata"</dd><dt>Tamanho</dt><dd>4</dd></dl>
+    <p>Navio em linha reta; segue a mesma regra de orientação que <code>Caravel</code>.</p>
+    <h4>Construtor</h4>
+    <div class="table-wrap"><table><tbody>
+      <tr><td class="sig mono">Frigate(Compass bearing, IPosition pos)</td><td>Lança <code>IllegalArgumentException</code> para <code>UNKNOWN</code>.</td></tr>
+    </tbody></table></div>
+  </div>
+</article>
+
+<article class="cls" id="Galleon" data-search>
+  <div class="cls-head"><h3>Galleon <span class="badge b-class">classe</span></h3><div class="cls-decl mono">public class Galleon extends Ship</div></div>
+  <div class="cls-body">
+    <dl class="kv"><dt>Categoria</dt><dd>"Galeao"</dd><dt>Tamanho</dt><dd>5</dd></dl>
+    <p>Único navio com forma não linear: um T de 5 células, com rotação dependente da orientação. Cada forma é calculada por um método privado (<code>fillNorth</code>, <code>fillSouth</code>, <code>fillEast</code>, <code>fillWest</code>). A célula laranja é a âncora <code>(r, c)</code>.</p>
+    <div class="shapes">
+      <div class="shape"><div class="board" aria-hidden="true">
+        <span></span><span></span><span class="anchor"></span><span class="on"></span><span class="on"></span>
+        <span></span><span></span><span></span><span class="on"></span><span></span>
+        <span></span><span></span><span></span><span class="on"></span><span></span>
+      </div><div><b>NORTH</b></div></div>
+      <div class="shape"><div class="board" aria-hidden="true">
+        <span></span><span></span><span class="anchor"></span><span></span><span></span>
+        <span></span><span></span><span class="on"></span><span></span><span></span>
+        <span></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span>
+      </div><div><b>SOUTH</b></div></div>
+      <div class="shape"><div class="board" aria-hidden="true">
+        <span></span><span></span><span class="anchor"></span><span></span><span></span>
+        <span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span>
+        <span></span><span></span><span class="on"></span><span></span><span></span>
+      </div><div><b>EAST</b></div></div>
+      <div class="shape"><div class="board" aria-hidden="true">
+        <span></span><span></span><span class="anchor"></span><span></span><span></span>
+        <span></span><span></span><span class="on"></span><span class="on"></span><span class="on"></span>
+        <span></span><span></span><span class="on"></span><span></span><span></span>
+      </div><div><b>WEST</b></div></div>
+    </div>
+    <h4>Construtor</h4>
+    <div class="table-wrap"><table><tbody>
+      <tr><td class="sig mono">Galleon(Compass bearing, IPosition pos)</td><td>Lança <code>NullPointerException</code> se <code>bearing == null</code> e <code>IllegalArgumentException</code> se for <code>UNKNOWN</code>.</td></tr>
+    </tbody></table></div>
+  </div>
+</article>
+
+<article class="cls" id="Fleet" data-search>
+  <div class="cls-head"><h3>Fleet <span class="badge b-class">classe</span></h3><div class="cls-decl mono">public class Fleet implements IFleet</div></div>
+  <div class="cls-body">
+    <p>Coleção de navios de um jogador. Garante que cada navio adicionado cabe no tabuleiro e não toca em nenhum outro.</p>
+    <h4>Atributos</h4>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Nome</th><th>Tipo</th><th>Descrição</th></tr></thead>
+      <tbody><tr><td class="mono">ships</td><td class="mono">List&lt;IShip&gt;</td><td>Navios da frota (inicialmente vazia).</td></tr></tbody>
+    </table></div>
+    <h4>Métodos</h4>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Assinatura</th><th>Descrição</th></tr></thead>
+      <tbody>
+        <tr><td class="sig mono">List&lt;IShip&gt; getShips()</td><td>Lista interna de navios.</td></tr>
+        <tr><td class="sig mono">boolean addShip(IShip s)</td><td>Adiciona se <code>ships.size() ≤ FLEET_SIZE</code>, dentro do tabuleiro e sem risco de colisão.</td></tr>
+        <tr><td class="sig mono">List&lt;IShip&gt; getShipsLike(String category)</td><td>Filtra por categoria.</td></tr>
+        <tr><td class="sig mono">List&lt;IShip&gt; getFloatingShips()</td><td>Filtra os navios ainda a flutuar.</td></tr>
+        <tr><td class="sig mono">IShip shipAt(IPosition pos)</td><td>Primeiro navio que ocupa <code>pos</code>, ou <code>null</code>.</td></tr>
+        <tr><td class="sig mono">void printStatus()</td><td>Imprime todos os navios, os que flutuam e depois cada categoria (Galeão → Barca).</td></tr>
+        <tr><td class="sig mono">void printShipsByCategory(String category)</td><td>Imprime os navios de uma categoria.</td></tr>
+        <tr><td class="sig mono">void printFloatingShips()</td><td>Imprime os navios a flutuar.</td></tr>
+        <tr><td class="sig mono"><span class="mod">package</span> void printAllShips()</td><td>Imprime todos os navios.</td></tr>
+        <tr><td class="sig mono"><span class="mod">static</span> void printShips(List&lt;IShip&gt;)</td><td>Utilitário de impressão.</td></tr>
+        <tr><td class="sig mono"><span class="mod">private</span> boolean isInsideBoard(IShip s)</td><td>Verifica RN-03 usando os extremos do navio.</td></tr>
+        <tr><td class="sig mono"><span class="mod">private</span> boolean colisionRisk(IShip s)</td><td>Verifica RN-04 contra todos os navios existentes.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</article>
+
+<article class="cls" id="Game" data-search>
+  <div class="cls-head"><h3>Game <span class="badge b-class">classe</span></h3><div class="cls-decl mono">public class Game implements IGame</div></div>
+  <div class="cls-body">
+    <p>Motor da partida. Recebe uma frota, processa tiros e mantém as estatísticas.</p>
+    <h4>Atributos</h4>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Nome</th><th>Tipo</th><th>Descrição</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">fleet</td><td class="mono">IFleet</td><td>Frota alvo.</td></tr>
+        <tr><td class="mono">shots</td><td class="mono">List&lt;IPosition&gt;</td><td>Tiros válidos já efetuados.</td></tr>
+        <tr><td class="mono">countInvalidShots</td><td class="mono">Integer</td><td>Tiros fora do tabuleiro.</td></tr>
+        <tr><td class="mono">countRepeatedShots</td><td class="mono">Integer</td><td>Tiros repetidos.</td></tr>
+        <tr><td class="mono">countHits</td><td class="mono">Integer</td><td>Tiros certeiros.</td></tr>
+        <tr><td class="mono">countSinks</td><td class="mono">Integer</td><td>Navios afundados.</td></tr>
+      </tbody>
+    </table></div>
+    <h4>Construtor</h4>
+    <div class="table-wrap"><table><tbody>
+      <tr><td class="sig mono">Game(IFleet fleet)</td><td>Associa a frota e inicializa a lista de tiros e os contadores de inválidos e repetidos.</td></tr>
+    </tbody></table></div>
+    <h4>Métodos</h4>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Assinatura</th><th>Descrição</th></tr></thead>
+      <tbody>
+        <tr><td class="sig mono">IShip fire(IPosition pos)</td><td>Ver <a href="#flows">processamento de um tiro</a>.</td></tr>
+        <tr><td class="sig mono">List&lt;IPosition&gt; getShots()</td><td>Tiros válidos.</td></tr>
+        <tr><td class="sig mono">int getRepeatedShots() / getInvalidShots() / getHits() / getSunkShips()</td><td>Contadores.</td></tr>
+        <tr><td class="sig mono">int getRemainingShips()</td><td><code>fleet.getFloatingShips().size()</code>.</td></tr>
+        <tr><td class="sig mono">void printBoard(List&lt;IPosition&gt;, Character marker)</td><td>Imprime o tabuleiro com <code>.</code> para água e <code>marker</code> nas posições dadas.</td></tr>
+        <tr><td class="sig mono">void printValidShots()</td><td><code>printBoard(getShots(), 'X')</code>.</td></tr>
+        <tr><td class="sig mono">void printFleet()</td><td>Imprime as células de todos os navios com <code>'#'</code>.</td></tr>
+        <tr><td class="sig mono"><span class="mod">private</span> boolean validShot(IPosition)</td><td>Verifica os limites do tabuleiro.</td></tr>
+        <tr><td class="sig mono"><span class="mod">private</span> boolean repeatedShot(IPosition)</td><td>Verifica se a posição já está em <code>shots</code>.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</article>
+
+<article class="cls" id="Tasks" data-search>
+  <div class="cls-head"><h3>Tasks <span class="badge b-class">classe</span></h3><div class="cls-decl mono">public class Tasks</div></div>
+  <div class="cls-body">
+    <p>Ponto de interação por consola e conjunto de cenários incrementais de teste manual (A → D). Toda a saída é feita via Log4j (<code>LOGGER</code>).</p>
+    <h4>Constantes</h4>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Nome</th><th>Valor</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">NUMBER_SHOTS</td><td>3</td></tr>
+        <tr><td class="mono">GOODBYE_MESSAGE</td><td>"Bons ventos!"</td></tr>
+        <tr><td class="mono">NOVAFROTA, DESISTIR, RAJADA, VERTIROS, BATOTA, STATUS</td><td>"nova", "desisto", "rajada", "ver", "mapa", "estado"</td></tr>
+      </tbody>
+    </table></div>
+    <h4>Métodos</h4>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Assinatura</th><th>Descrição</th></tr></thead>
+      <tbody>
+        <tr><td class="sig mono"><span class="mod">static</span> void taskA()</td><td>Lê navios e, para cada um, 3 posições; indica se o navio as ocupa.</td></tr>
+        <tr><td class="sig mono"><span class="mod">static</span> void taskB()</td><td>Comandos <code>nova</code>, <code>estado</code> e <code>desisto</code>.</td></tr>
+        <tr><td class="sig mono"><span class="mod">static</span> void taskC()</td><td>Como B, mais <code>mapa</code>.</td></tr>
+        <tr><td class="sig mono"><span class="mod">static</span> void taskD()</td><td>Jogo completo: acrescenta <code>rajada</code> e <code>ver</code>.</td></tr>
+        <tr><td class="sig mono"><span class="mod">static</span> Fleet buildFleet(Scanner in)</td><td>Lê navios até a frota estar completa, registando as falhas.</td></tr>
+        <tr><td class="sig mono"><span class="mod">static</span> Ship readShip(Scanner in)</td><td>Lê <code>tipo linha coluna orientação</code> e usa a fábrica.</td></tr>
+        <tr><td class="sig mono"><span class="mod">static</span> Position readPosition(Scanner in)</td><td>Lê dois inteiros.</td></tr>
+        <tr><td class="sig mono"><span class="mod">static</span> void firingRound(Scanner in, IGame game)</td><td>Dispara 3 tiros e anuncia os afundamentos.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</article>
+</section>
+
+<section id="issues" data-search>
+  <h2>Problemas conhecidos</h2>
+  <p>Diferenças entre o comportamento esperado e o código atual. Recomenda-se cobri-las com testes antes de as corrigir.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>ID</th><th>Local</th><th>Descrição</th><th>Severidade</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">PC-01</td><td><code>Game(IFleet)</code></td><td><code>countHits</code> e <code>countSinks</code> não são inicializados; o primeiro tiro certeiro lança <code>NullPointerException</code>.</td><td><span class="badge sev-high">alta</span></td></tr>
+      <tr><td class="mono">PC-02</td><td><code>Game.validShot</code></td><td>Usa <code>&lt;= BOARD_SIZE</code>, pelo que aceita linha ou coluna 10, que está fora do tabuleiro (e rebenta em <code>printBoard</code>).</td><td><span class="badge sev-high">alta</span></td></tr>
+      <tr><td class="mono">PC-03</td><td><code>Fleet.addShip</code></td><td><code>ships.size() &lt;= FLEET_SIZE</code> permite 11 navios.</td><td><span class="badge sev-mid">média</span></td></tr>
+      <tr><td class="mono">PC-04</td><td><code>Tasks.buildFleet</code></td><td><code>while (i &lt;= FLEET_SIZE)</code> exige 11 navios válidos.</td><td><span class="badge sev-mid">média</span></td></tr>
+      <tr><td class="mono">PC-05</td><td><code>Position.hashCode</code></td><td>Inclui <code>isHit</code> e <code>isOccupied</code>, mas <code>equals</code> não; viola o contrato <code>equals</code>/<code>hashCode</code> em coleções baseadas em hash.</td><td><span class="badge sev-mid">média</span></td></tr>
+      <tr><td class="mono">PC-06</td><td><code>Carrack</code>, <code>Frigate</code></td><td>Não verificam <code>null</code>: o <code>switch</code> lança <code>NullPointerException</code> sem mensagem, ao contrário de <code>Caravel</code> e <code>Galleon</code>.</td><td><span class="badge sev-low">baixa</span></td></tr>
+      <tr><td class="mono">PC-07</td><td><code>Barge</code></td><td>Aceita <code>Compass.UNKNOWN</code> sem erro, ao contrário dos outros navios.</td><td><span class="badge sev-low">baixa</span></td></tr>
+      <tr><td class="mono">PC-08</td><td><code>Tasks.taskC</code></td><td><code>LOGGER.info(fleet)</code> imprime a referência do objeto, porque <code>Fleet</code> não redefine <code>toString</code>.</td><td><span class="badge sev-low">baixa</span></td></tr>
+      <tr><td class="mono">PC-09</td><td><code>Ship.buildShip</code></td><td>Uma orientação inválida lança exceção em vez de devolver <code>null</code>; <code>readShip</code> não a trata e a sessão termina.</td><td><span class="badge sev-low">baixa</span></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="glossary" data-search>
+  <h2>Glossário</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Termo</th><th>Definição</th></tr></thead>
+    <tbody>
+      <tr><td><b>Âncora</b></td><td>Posição passada ao construtor de um navio, a partir da qual se calculam as restantes células.</td></tr>
+      <tr><td><b>Orientação (bearing)</b></td><td>Valor de <code>Compass</code> que define a direção do navio.</td></tr>
+      <tr><td><b>Adjacência</b></td><td>Duas células são adjacentes se diferem no máximo 1 em linha e 1 em coluna.</td></tr>
+      <tr><td><b>Rajada</b></td><td>Conjunto de 3 tiros disparados de uma só vez.</td></tr>
+      <tr><td><b>Tiro inválido</b></td><td>Tiro fora dos limites do tabuleiro.</td></tr>
+      <tr><td><b>Tiro repetido</b></td><td>Tiro numa posição já alvejada.</td></tr>
+      <tr><td><b>Batota</b></td><td>Comando <code>mapa</code>, que revela a posição dos navios.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<footer>Pacote <code>iscteiul.ista.battleship</code> · Documentação gerada a partir do código-fonte · ISCTE-IUL</footer>
+
 </main>
+</div>
 
+<script>
+(function () {
+  var root = document.documentElement;
+  try { var t = localStorage.getItem('docs-theme'); if (t) root.setAttribute('data-theme', t); } catch (e) {}
+  document.getElementById('themeBtn').addEventListener('click', function () {
+    var cur = root.getAttribute('data-theme');
+    var dark = cur === 'dark' || (!cur && matchMedia('(prefers-color-scheme: dark)').matches);
+    var next = dark ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('docs-theme', next); } catch (e) {}
+  });
+
+  var sidebar = document.getElementById('sidebar');
+  document.getElementById('menuBtn').addEventListener('click', function () { sidebar.classList.toggle('open'); });
+  sidebar.addEventListener('click', function (e) { if (e.target.closest('a')) sidebar.classList.remove('open'); });
+
+  var links = Array.prototype.slice.call(sidebar.querySelectorAll('a'));
+  var targets = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (en.isIntersecting) links.forEach(function (l) { l.classList.toggle('active', l.getAttribute('href') === '#' + en.target.id); });
+    });
+  }, { rootMargin: '-60px 0px -70% 0px' });
+  targets.forEach(function (t) { if (t) obs.observe(t); });
+
+  var blocks = document.querySelectorAll('[data-search]');
+  document.getElementById('search').addEventListener('input', function (e) {
+    var q = e.target.value.trim().toLowerCase();
+    blocks.forEach(function (b) { b.classList.toggle('hidden-by-search', !!q && b.textContent.toLowerCase().indexOf(q) === -1); });
+    links.forEach(function (l, i) { var t = targets[i]; l.classList.toggle('hidden-by-search', !!(t && t.classList.contains('hidden-by-search'))); });
+  });
+})();
+</script>
 </body>
 </html>
