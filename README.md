@@ -38,3 +38,6 @@ For more information about the ships used in the Discoveries Battleship Game:
 - [Carrack](https://en.wikipedia.org/wiki/Carrack)
 - [Caravel](https://en.wikipedia.org/wiki/Caravel)
 - [Barge](https://en.wikipedia.org/wiki/Barge)
+
+## Technical Documentation
+The project's technical documentation is available at [lei-129825.github.io/battle-ship](https://lei-129825.github.io/battle-ship/).
